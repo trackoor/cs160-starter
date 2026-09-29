@@ -1,0 +1,5 @@
+print(1 + 2 * 3 - 4 // 2 % 3)
+print(2 * 3 % 4 + 10 // 3 * 2)
+print(-3 * -3)
+print(1 - 2 - 3 * 4 // 5)
+print(not 1 + 1 == 3 and 2 < 3 or False)

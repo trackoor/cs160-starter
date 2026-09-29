@@ -1,0 +1,32 @@
+#==============================================================================#
+# This file specifies intentionally untracked files that git should ignore.
+#==============================================================================#
+# Submission zip files
+*.zip
+
+#==============================================================================#
+# File extensions to be ignored anywhere in the tree.
+#==============================================================================#
+# Byte compiled python modules.
+__pycache__/
+*.pyc
+# Temp files created by most text editors.
+*~
+# vim swap files
+.*.sw?
+.sw?
+# vscode settings directory
+.vscode
+# Intellij files
+.idea
+# OS X specific files.
+.DS_Store
+
+#==============================================================================#
+# Build artifacts
+#==============================================================================#
+# The formatter and linter that build_support/packages.sh installs.
+/build_support/.venv/
+# A place for programs, IR and executables you make while experimenting.
+/scratch/
+a.out

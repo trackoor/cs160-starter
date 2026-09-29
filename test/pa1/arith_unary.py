@@ -1,0 +1,6 @@
+print(-5)
+print(-(-5))
+print(- - 7)
+print(-2 * 3)
+print(-(2 * 3) + 10)
+print(0 - 2147483647)

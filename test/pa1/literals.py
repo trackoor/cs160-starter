@@ -1,0 +1,5 @@
+print(0)
+print(7)
+print(2147483647)
+print(True)
+print(False)

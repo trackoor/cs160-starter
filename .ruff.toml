@@ -1,0 +1,8 @@
+# Formatting and lint rules for `make format`, `make check-format` and `make check-lint`.
+line-length = 120
+target-version = "py311"
+# The test programs are ChocoPy: their spacing and positions are part of the tests.
+extend-exclude = ["test", "hidden", "docs"]
+
+[lint]
+select = ["E", "F", "W"]

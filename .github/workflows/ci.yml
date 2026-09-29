@@ -1,0 +1,46 @@
+name: Build Matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              name: "Ubuntu 24.04",
+              os: ubuntu-24.04,
+            }
+          - {
+              name: "macOS 14 (Sonoma)",
+              os: macos-14,
+            }
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        working-directory: ${{github.workspace}}
+        run: sudo bash ./build_support/packages.sh -y
+
+      - name: Install Dependencies (macOS)
+        if: runner.os == 'macOS'
+        working-directory: ${{github.workspace}}
+        run: bash ./build_support/packages.sh -y
+
+      - name: Check Format
+        run: make check-format
+
+      - name: Check Lint
+        run: make check-lint
+
+      - name: Check Tests
+        run: make check-public-ci-tests
