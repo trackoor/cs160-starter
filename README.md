@@ -16,60 +16,23 @@ $ python3 -m compiler run hello.py
 
 **WARNING: DO NOT DIRECTLY FORK THIS REPO. DO NOT PUSH ASSIGNMENT SOLUTIONS PUBLICLY. THIS IS AN ACADEMIC INTEGRITY VIOLATION UNDER THE [UCSB ACADEMIC INTEGRITY POLICY](https://studentconduct.sa.ucsb.edu/academic-integrity), AND SO IS SHARING YOUR SOLUTION IN ANY OTHER WAY.**
 
-## Cloning this Repository
+## Getting the Starter Code
 
-The following instructions are adapted from the GitHub documentation on [duplicating a repository](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/duplicating-a-repository). The procedure below walks you through creating a private repository that you can use for development.
+Each assignment comes through [OneWorld](https://oneworldai.com). Its page, which the course staff send you, has three steps:
 
-1. [Create a new repository](https://github.com/new) under your account. Pick a name (e.g. `cs160-private`) and select **Private** for the repository visibility level.
-2. On your development machine, create a bare clone of the starter repository:
-   ```console
-   $ git clone --bare https://github.com/trackoor/cs160-starter.git cs160-public
-   ```
-3. Next, [mirror](https://git-scm.com/docs/git-push#Documentation/git-push.txt---mirror) the starter repository to your own private repository. Suppose your GitHub name is `student` and your repository name is `cs160-private`. The procedure for mirroring the repository is then:
-   ```console
-   $ cd cs160-public
+1. Install or update the `oneworld` command line. Run it again for each assignment.
+2. Join the assignment: `oneworld assessment join` with its invite code. It downloads this starter code, as released for that assignment, into a new folder, a git repository of its own, and leaves you there. Work in that folder until you hand the assignment in.
+3. Hand it in: `oneworld assessment submit`, in that folder. It sends what you changed and the AI sessions you choose.
 
-   # If you pull / push over HTTPS
-   $ git push https://github.com/student/cs160-private.git main
+From PA2 on, bring your work from the folder of the previous assignment into the new one:
 
-   # If you pull / push over SSH
-   $ git push git@github.com:student/cs160-private.git main
-   ```
-   This copies everything in the starter repository to your own private repository. You can now delete your local clone of the starter repository:
-   ```console
-   $ cd ..
-   $ rm -rf cs160-public
-   ```
-4. Clone your private repository to your development machine:
-   ```console
-   # If you pull / push over HTTPS
-   $ git clone https://github.com/student/cs160-private.git
+```console
+$ python3 tools/carry.py ../previous-folder
+```
 
-   # If you pull / push over SSH
-   $ git clone git@github.com:student/cs160-private.git
-   ```
-5. Add the starter repository as a second remote. This allows you to retrieve each assignment as it is released, and any fixes, and merge them with your solution throughout the quarter:
-   ```console
-   $ git remote add public https://github.com/trackoor/cs160-starter.git
-   ```
-   You can verify that the remote was added with the following command:
-   ```console
-   $ git remote -v
-   origin	https://github.com/student/cs160-private.git (fetch)
-   origin	https://github.com/student/cs160-private.git (push)
-   public	https://github.com/trackoor/cs160-starter.git (fetch)
-   public	https://github.com/trackoor/cs160-starter.git (push)
-   ```
-6. You can now pull in changes from the starter repository as needed with:
-   ```console
-   $ git pull --no-rebase public main
-   ```
-7. **Disable GitHub Actions** from the project settings of your private repository; otherwise, you may run out of GitHub Actions quota.
-   ```
-   Settings > Actions > General > Actions permissions > Disable actions.
-   ```
+It copies the modules you wrote in `compiler/`, your tests in `test/mine/` and your design documents, and never a file the course provides. Each writeup gives the details, starting with PA0.
 
-We suggest working on your assignments in separate branches. If you do not understand how Git branches work, [learn how](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging). If you fail to do this, you might lose all your work at some point in the quarter, and nobody will be able to help you.
+To keep a backup of your work on GitHub, push your folder to a **private** repository of your own.
 
 ## Build
 
