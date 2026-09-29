@@ -22,7 +22,7 @@ Each assignment comes through [OneWorld](https://oneworldai.com). Its page, whic
 
 1. Install or update the `oneworld` command line. Run it again for each assignment.
 2. Join the assignment: `oneworld assessment join` with its invite code. It downloads this starter code, as released for that assignment, into a new folder, a git repository of its own, and leaves you there. Work in that folder until you hand the assignment in.
-3. Hand it in: `oneworld assessment submit`, in that folder. It sends what you changed and the AI sessions you choose.
+3. Hand it in: `oneworld assessment submit`, in that folder. It sends what you changed and, if you use AI, your sessions.
 
 From PA2 on, bring your work from the folder of the previous assignment into the new one:
 

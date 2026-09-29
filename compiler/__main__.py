@@ -15,7 +15,7 @@
     python3 -m compiler ll    prog.py      print the LLVM IR
     python3 -m compiler build prog.py -o prog
     python3 -m compiler tokens prog.py     print your lexer's tokens (PA2)
-    python3 -m compiler ast   prog.py      print ast.dump of your parser's tree (PA2)
+    python3 -m compiler ast   prog.py      print ast.dump of the tree (Python's in PA1, your parser's from PA2)
     python3 -m compiler ast --positions prog.py    print where each statement and expression starts
     python3 -m compiler check prog.py      type-check only (PA3)
     python3 -m compiler opt -O1 prog.ll    run your passes on an existing .ll file (PA5, PA6)

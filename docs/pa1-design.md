@@ -1,16 +1,20 @@
 # PA1 Design Document
 
 <!--
-A draft outline for your PA1 design document. About one page total
-(250-900 words). This document is part of your PA1 submission: it is handed in
-with your code when you run `oneworld assessment submit`.
+Write this document only if you did not use an AI coding assistant for PA1.
+If you did, your sessions are graded instead, and you can leave this file as it
+is (Section "Submitting your work" of the PA1 writeup).
+
+Write it yourself: a design document written with AI earns no points, and
+staff check. About one page (250-900 words). It is handed in with your code
+when you run `oneworld assessment submit`, and graded on how clearly you state
+each problem, your reasoning, how you checked your work, and how you judged
+the results against evidence.
 -->
 
 **Name:**
 
 **Perm Number / Email:**
-
-**Video:** (a link staff can open)
 
 ## Values and Variables
 
@@ -34,12 +38,3 @@ they need.
 For each of your three tests in `test/mine/pa1`, say what it checks, what
 it prints, and which wrong compiler it would catch. Say how else you checked
 your work.
-
-## AI Usage
-
-Disclose how you used AI tools on this assignment. Be specific about which
-tools and what you used them for: understanding the writeup, generating code
-you submitted, debugging, explaining an error, or reviewing your design. If AI
-produced any code you are submitting, say which parts. Describe one suggestion
-you rejected or corrected, and the evidence that showed it was wrong. If you
-did not use AI at all, write "None".

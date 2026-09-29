@@ -25,7 +25,7 @@ help:
 	@echo "make format                format your Python files in place"
 	@echo "make check-format          check the formatting without changing anything"
 	@echo "make check-lint            check your Python files for common mistakes"
-	@echo "make submit-pa1            create pa1-submission.zip (submit-pa1 ... submit-pa6)"
+	@echo "make submit-pa1            a zip for staff; you hand in with oneworld assessment submit"
 
 check-tests:
 	$(PYTHON) tools/check.py
