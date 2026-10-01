@@ -4,12 +4,12 @@
 ## CS160 PACKAGE INSTALLATION
 ##
 ## This script will install all the packages that are needed to
-## build and test your compiler: Python 3.11 or later, clang 15 or
-## later, git, zip, and the ruff formatter and linter.
+## build and test your compiler: Python, clang, git, zip, and the
+## ruff formatter and linter.
 ##
-## Supported environments:
-##  * Ubuntu 24.04 (x86-64 or ARM), including under WSL 2
-##  * macOS 14 Sonoma or later (x86-64 or ARM)
+## It works on macOS, and on Linux with apt-get (Ubuntu, Debian),
+## dnf (Fedora), pacman (Arch) or zypper (openSUSE), including under
+## WSL 2. Then run python3 tools/doctor.py to check the versions.
 ## =================================================================
 
 RUFF_VERSION=0.16.9
@@ -42,28 +42,19 @@ install() {
   case $UNAME in
     DARWIN) install_mac ;;
 
-    LINUX)
-      version=$(cat /etc/os-release | grep VERSION_ID | cut -d '"' -f 2)
-      case $version in
-        24.04) install_linux ;;
-        *) give_up ;;
-      esac
-      ;;
+    LINUX) install_linux ;;
 
-    *) give_up ;;
+    *) install_other ;;
   esac
 
   install_ruff
 }
 
-give_up() {
+install_other() {
   set +x
-  echo "Unsupported distribution '$UNAME'"
-  echo "Please ask on the course Slack for help."
-  echo "Be sure to include the contents of this message."
-  echo "Platform: $(uname -a)"
-  echo
-  exit 1
+  echo "This script does not know how to install packages on $(uname -s):"
+  echo "install Python, clang, git and zip yourself, then run this script again."
+  set -x
 }
 
 install_mac() {
@@ -77,19 +68,36 @@ install_mac() {
   # Update Homebrew.
   brew update
   # Install packages. The python3 that comes with the command-line tools is too old.
-  brew ls --versions python@3.13 || brew install python@3.13
+  brew ls --versions python || brew install python
 }
 
 install_linux() {
-  # Update apt-get.
-  apt-get -y update
-  # Install packages.
-  apt-get -y install \
-      clang \
-      git \
-      python3 \
-      python3-venv \
-      zip
+  # Use whichever package manager this distribution has.
+  if command -v apt-get > /dev/null; then
+    apt-get -y update
+    apt-get -y install clang git python3 python3-venv zip
+    # An older release's default clang cannot read the course's IR (its `ptr` needs LLVM 15):
+    # install the newest clang the release offers, and make it the `clang` on PATH.
+    major=$(clang --version 2> /dev/null | grep -o 'version [0-9]*' | head -1 | cut -d ' ' -f 2)
+    if [ "${major:-0}" -lt 15 ]; then
+      newest=$(apt-cache search --names-only '^clang-[0-9]+$' | cut -d ' ' -f 1 | sort -V | tail -1)
+      if [ -n "$newest" ]; then
+        apt-get -y install "$newest"
+        ln -sf "/usr/bin/$newest" /usr/local/bin/clang
+      fi
+    fi
+  elif command -v dnf > /dev/null; then
+    dnf -y install clang git python3 zip
+  elif command -v pacman > /dev/null; then
+    pacman -Sy --noconfirm --needed clang git python zip
+  elif command -v zypper > /dev/null; then
+    zypper --non-interactive install clang git python3 zip
+  else
+    set +x
+    echo "No apt-get, dnf, pacman or zypper here: install Python, clang, git"
+    echo "and zip yourself, then run this script again."
+    set -x
+  fi
 }
 
 install_ruff() {

@@ -14,7 +14,7 @@
 
     python3 tools/doctor.py
 
-It checks your Python version, finds clang, compiles and runs a small LLVM IR
+It shows your Python version, finds clang, compiles and runs a small LLVM IR
 program together with the course runtime, and runs the compiler on
 `print(160)`. Run it once after setting up, and again whenever something
 fails for reasons that do not look like your code.
@@ -61,13 +61,8 @@ def main() -> int:
             if advice:
                 print(f"      {advice}")
 
-    report(
-        sys.version_info >= (3, 11),
-        f"Python {platform.python_version()} at {sys.executable}",
-        "the course needs Python 3.11 or newer; see Setup in README.md",
-    )
-    if sys.platform == "win32":
-        report(False, "running on Windows itself", "use WSL 2 (Ubuntu) and run everything inside it; see README.md")
+    # No version or system is refused here: the checks below run the real tools, and fail only if they do.
+    report(True, f"Python {platform.python_version()} at {sys.executable}, on {platform.system()}")
 
     cc = os.environ.get("CC") or shutil.which("clang")
     report(cc is not None, f"clang found at {cc}" if cc else "clang not found", "install clang; see Setup in README.md")
@@ -87,7 +82,9 @@ def main() -> int:
                 report(
                     False,
                     "clang compiles LLVM IR with the course runtime",
-                    f"{first}\n      (clang older than LLVM 15 does not understand `ptr`; install a newer one)",
+                    f"{first}\n      (this clang is too old to read the course's IR: on Linux, run"
+                    " build_support/packages.sh, which installs a newer one;\n      on macOS, update the Xcode"
+                    " command-line tools)",
                 )
             else:
                 ran = subprocess.run([str(exe)], capture_output=True, text=True, timeout=10)

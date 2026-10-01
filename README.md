@@ -36,9 +36,9 @@ To keep a backup of your work on GitHub, push your folder to a **private** repos
 
 ## Build
 
-We recommend developing your compiler on Ubuntu 24.04, or macOS (M1/M2/Intel). On Windows, use WSL 2 with Ubuntu 24.04. We do not support any other environments (i.e., do not come to office hours to debug them). The grading environment runs Ubuntu 24.04, with Python 3.12 and clang 18.
+You can develop your compiler on macOS, on Linux, or on Windows inside WSL 2. Grading runs on Linux.
 
-### Linux (Recommended) / macOS (Development Only)
+### Linux / macOS
 
 To ensure that you have the proper packages on your machine, run the following script to automatically install them:
 
@@ -49,7 +49,7 @@ $ sudo build_support/packages.sh
 $ build_support/packages.sh
 ```
 
-It installs Python 3.11 or later, clang 15 or later, and the `ruff` formatter and linter. Then check that everything works:
+It installs Python, clang, and the `ruff` formatter and linter. Then check that everything works:
 
 ```console
 $ python3 tools/doctor.py
