@@ -214,14 +214,19 @@ class Function:
         for instr in self.instructions():
             instr.replace_uses(old, new)
 
-    def remove_unreachable_blocks(self) -> None:
-        """@brief Delete the blocks that cannot be reached from the entry block, and their phi operands."""
-        reachable, stack = set(), [self.blocks[0].label]
+    def reachable_labels(self) -> set[str]:
+        """@return the block labels reachable by following edges from entry."""
+        reachable, stack = set(), [self.blocks[0].label] if self.blocks else []
         while stack:
             label = stack.pop()
             if label not in reachable:
                 reachable.add(label)
                 stack.extend(self.block(label).successors())
+        return reachable
+
+    def remove_unreachable_blocks(self) -> None:
+        """@brief Delete the blocks that cannot be reached from the entry block, and their phi operands."""
+        reachable = self.reachable_labels()
         self.blocks = [b for b in self.blocks if b.label in reachable]
         for b in self.blocks:
             for phi in b.phis():
@@ -234,10 +239,16 @@ class Function:
         This is only for checking your own results; PA5 asks you to compute
         dominators yourself.
 
+        Unreachable predecessors cannot change dominance on a path from entry.
+        Every block vacuously dominates an unreachable block, as LLVM requires.
+
         @return for each block's label, the labels of the blocks that dominate it
         """
         labels = [b.label for b in self.blocks]
+        if not labels:
+            return {}
         preds = self.predecessors()
+        reachable = self.reachable_labels()
         dom = {label: set(labels) for label in labels}
         entry = labels[0]
         dom[entry] = {entry}
@@ -245,7 +256,9 @@ class Function:
         while changed:
             changed = False
             for label in labels[1:]:
-                incoming = [dom[p] for p in preds[label]]
+                if label not in reachable:
+                    continue
+                incoming = [dom[p] for p in preds[label] if p in reachable]
                 new = {label} | (set.intersection(*incoming) if incoming else set())
                 if new != dom[label]:
                     dom[label], changed = new, True
@@ -288,6 +301,7 @@ class Function:
             return problems
         preds = self.predecessors()
         dom = self.dominators()
+        reachable = self.reachable_labels()
         for b in self.blocks:
             for k, instr in enumerate(b.instrs):
                 if instr.op == "phi":
@@ -312,8 +326,10 @@ class Function:
                     where = definitions.get(value)
                     if where is None:
                         problems.append(f"{value} is used in {b.label} but never defined")
-                    elif where[0] is not None and (
-                        where[0] not in dom[b.label] or (where[0] == b.label and where[1] >= k)
+                    elif (
+                        where[0] is not None
+                        and b.label in reachable
+                        and (where[0] not in dom[b.label] or (where[0] == b.label and where[1] >= k))
                     ):
                         problems.append(f"Instruction does not dominate all uses: {value} is used in {b.label}")
         return problems

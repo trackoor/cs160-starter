@@ -4,35 +4,31 @@
 
 [![Build Status](https://github.com/trackoor/cs160-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/trackoor/cs160-starter/actions/workflows/ci.yml)
 
-This is the starter code of the ChocoPy compiler you build in [CS160 Compilers](https://github.com/fredfeng/CS160) at [UC Santa Barbara](https://www.cs.ucsb.edu). The compiler, written in Python, translates programs in the course's subset of [ChocoPy](https://chocopy.org), a statically typed subset of Python, into LLVM IR, which `clang` compiles together with a small C runtime into a native executable. This system was developed for educational purposes and should not be used in production environments.
+This is the starter code for the compiler you build in [CS160 Compilers](https://github.com/fredfeng/CS160) at [UC Santa Barbara](https://www.cs.ucsb.edu). It translates the course's subset of [ChocoPy](https://chocopy.org) into LLVM IR. `clang` compiles that IR with the supplied C runtime to produce an executable.
 
 Each of the six programming assignments adds to the same compiler. The assignment writeups are posted in the course repository under [`assignments/`](https://github.com/fredfeng/CS160/tree/main/assignments), and the language your compiler accepts is specified in [`chocopy/SPEC.md`](https://github.com/fredfeng/CS160/blob/main/chocopy/SPEC.md).
 
-```console
-$ echo 'print(160)' > hello.py
-$ python3 -m compiler run hello.py
-160
-```
-
-**WARNING: DO NOT DIRECTLY FORK THIS REPO. DO NOT PUSH ASSIGNMENT SOLUTIONS PUBLICLY. THIS IS AN ACADEMIC INTEGRITY VIOLATION UNDER THE [UCSB ACADEMIC INTEGRITY POLICY](https://studentconduct.sa.ucsb.edu/academic-integrity), AND SO IS SHARING YOUR SOLUTION IN ANY OTHER WAY.**
+**Get your starter through OneWorld; do not fork this repository. Keep your solutions private.** Publishing or sharing solutions violates the [UCSB academic integrity policy](https://studentconduct.sa.ucsb.edu/academic-integrity).
 
 ## Getting the Starter Code
 
-Each assignment comes through [OneWorld](https://oneworldai.com). Its page, which the course staff send you, has three steps:
+Each assignment's [OneWorld](https://oneworldai.com) page provides the commands to install the CLI, join the assignment and submit:
 
-1. Install or update the `oneworld` command line. Run it again for each assignment.
-2. Join the assignment: `oneworld assessment join` with its invite code. It downloads this starter code, as released for that assignment, into a new folder, a git repository of its own, and leaves you there. Work in that folder until you hand the assignment in.
-3. Hand it in: `oneworld assessment submit`, in that folder. It sends what you changed and, if you use AI, your sessions.
+1. Run the installation command to install or update `oneworld` for each assignment.
+2. Run `oneworld assessment join` with the assignment's invite code. It downloads the starter into a new folder and opens a shell there.
+3. Work in that folder and run `oneworld assessment submit` there when ready. Submission includes your changes and the AI sessions you select.
 
-From PA2 on, bring your work from the folder of the previous assignment into the new one:
+From PA2 on, run `carry.py` in the new folder **before editing it** to bring over your previous assignment:
 
 ```console
 $ python3 tools/carry.py ../previous-folder
 ```
 
-It copies the modules you wrote in `compiler/`, your tests in `test/mine/` and your design documents, and never a file the course provides. Each writeup gives the details, starting with PA0.
+Replace `../previous-folder` with your previous assignment's path; put paths containing spaces in quotes. The tool copies your Python modules directly in `compiler/`, your tests in `test/mine/` and your design documents, while keeping the new course-provided files. If it reports conflicting changes, it copies nothing; compare the listed files before choosing which version to keep.
 
-To keep a backup of your work on GitHub, push your folder to a **private** repository of your own.
+Before submitting, run `oneworld assessment status` and check the assignment name. Select all relevant sessions if you submit sessions, and keep the receipt as confirmation of upload. Each handout describes the required code, tests and sessions or self-written design document. AI use is optional; no video or ZIP is required.
+
+If you back up your work on GitHub, use a **private** repository.
 
 ## Build
 
@@ -40,7 +36,7 @@ You can develop your compiler on macOS, on Linux, or on Windows inside WSL 2. Gr
 
 ### Linux / macOS
 
-To ensure that you have the proper packages on your machine, run the following script to automatically install them:
+Install the required tools:
 
 ```console
 # Linux
@@ -49,24 +45,26 @@ $ sudo build_support/packages.sh
 $ build_support/packages.sh
 ```
 
-It installs Python, clang, and the `ruff` formatter and linter. Then check that everything works:
+The script installs Python, clang and the `ruff` formatter and linter. Check your environment with:
 
 ```console
 $ python3 tools/doctor.py
 ```
 
-Your compiler needs no build step. To compile and run a program:
+Your Python compiler needs no build step. Save a program as `prog.py`, then compile and run it with:
 
 ```console
 $ python3 -m compiler run prog.py
 ```
 
-To print the LLVM IR instead, use `python3 -m compiler ll prog.py`; `python3 -m compiler --help` lists every command. To run the tests of every assignment released so far, together with your own tests in `test/mine`:
+These commands use the code you write: unfinished components raise `NotImplementedError`. In PA2, use `tokens` to test the lexer, `ast` to inspect the parser's tree and `make test-pa2` to run parser tests. While the parser is unfinished, `python3 -m compiler ast --parser=python prog.py` shows the reference tree, and `python3 tools/difftest.py --parser=python test/pa1` checks PA1.
+
+Use `python3 -m compiler ll prog.py` to print LLVM IR, or `python3 -m compiler --help` for all commands. To run every released assignment's tests, including your tests in `test/mine`:
 
 ```console
 $ make check-tests
 ```
 
-Each writeup describes the tests, the design document and the submission of its assignment.
+For PA3 and PA4, use `--parser=python` with compiler commands and `difftest.py`, as the handouts do. Their `make test-pa3` and `make test-pa4` targets already select Python's parser, so a PA2 parser bug does not affect those assignments' tests. `make check-tests` also tests earlier assignments and can still report PA2 failures.
 
-There are some differences between macOS and Linux (e.g., Apple's clang compiles LLVM IR that is not in valid SSA form, which LLVM's own verifier would reject) that might cause test cases to produce different results on different platforms. Check your IR with `--verify` (for example `python3 tools/difftest.py --verify test/pa1`), and use a Linux machine to reproduce a result from the grading environment whenever possible.
+For code-generation tests, use `--verify` to check the generated IR, for example `python3 tools/difftest.py --verify test/pa1`. If a result differs from grading, try it on Linux; compiler behavior can differ between platforms.

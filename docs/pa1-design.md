@@ -1,15 +1,13 @@
 # PA1 Design Document
 
 <!--
-Write this document only if you did not use an AI coding assistant for PA1.
-If you did, your sessions are graded instead, and you can leave this file as it
-is (Section "Submitting your work" of the PA1 writeup).
+Submit this document, your PA1 Claude Code or Codex sessions, or both.
+Staff grade the document and sessions independently and use the higher
+score. See Section 8 of the PA1 handout.
 
-Write it yourself: a design document written with AI earns no points, and
-staff check. About one page (250-900 words). It is handed in with your code
-when you run `oneworld assessment submit`, and graded on how clearly you state
-each problem, your reasoning, how you checked your work, and how you judged
-the results against evidence.
+Write the document without AI; an AI-written document receives 0. Aim for
+about one page. Submit it with your code using `oneworld assessment submit`.
+Explain your design decisions and how you checked them.
 -->
 
 **Name:**
