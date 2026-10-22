@@ -15,4 +15,4 @@
 # which language features the driver accepts, and whether it runs your parser (from PA2)
 # and your type checker (from PA3) by default.
 
-RELEASED = 2
+RELEASED = 3

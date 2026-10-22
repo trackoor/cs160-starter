@@ -37,6 +37,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from compiler.config import RELEASED  # noqa: E402
 
 # The modules of compiler/ that the course provides; every other module there is yours.
 PROVIDED = {"__init__.py", "__main__.py", "config.py", "emit.py", "errors.py", "ir.py", "subset.py"}
@@ -104,7 +106,16 @@ def main() -> int:
         shutil.copyfile(folder / rel, ROOT / rel)
         print(f"copied {rel.as_posix()}")
     print(f"Copied {len(todo)} file{'' if len(todo) == 1 else 's'} from {args.folder}.", end=" ")
-    print("Run `make check-tests` to see that your earlier work still passes.")
+    if RELEASED == 1:
+        print("Run `make test-pa1` to check PA1.")
+    else:
+        command = (
+            "python3 tools/difftest.py --parser=python test/pa1 test/mine/pa1"
+            if RELEASED == 2
+            else "python3 tools/check.py " + " ".join(f"pa{n}" for n in range(1, RELEASED))
+        )
+        print(f"Run `{command}` to check your earlier work.")
+        print(f"PA{RELEASED} tests may fail until you implement PA{RELEASED}.")
     return 0
 
 
