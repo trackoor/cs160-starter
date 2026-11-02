@@ -7,7 +7,7 @@ LINT_DIRS := $(wildcard compiler tools release build_support starter logo)
 # The files you do not write. Every other module in compiler/ is yours and is submitted.
 PROVIDED := compiler/__init__.py compiler/__main__.py compiler/config.py compiler/emit.py \
             compiler/errors.py compiler/ir.py compiler/subset.py
-STUDENT_MODULES := $(filter-out $(PROVIDED),$(wildcard compiler/*.py))
+STUDENT_MODULES := $(filter-out $(PROVIDED),$(shell find compiler -type d -name __pycache__ -prune -o -type f -name '*.py' -print))
 
 # What each submission contains, besides your modules: your design documents and your tests.
 PA1_FILES := docs/pa1-design.md test/mine/pa1

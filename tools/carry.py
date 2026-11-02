@@ -19,7 +19,7 @@ new folder. Run this in the new folder, with the folder of your previous
 assignment, to copy what you wrote there:
 
   - the modules of compiler/ that you write (codegen.py, lexer.py, ...), and
-    any module you added to compiler/;
+    any Python modules or packages you added under compiler/;
   - your tests, test/mine/;
   - your design documents, docs/pa*-design.md.
 
@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 from compiler.config import RELEASED  # noqa: E402
 
-# The modules of compiler/ that the course provides; every other module there is yours.
+# These root modules of compiler/ are provided; modules inside your own packages are yours.
 PROVIDED = {"__init__.py", "__main__.py", "config.py", "emit.py", "errors.py", "ir.py", "subset.py"}
 
 
@@ -51,7 +51,12 @@ def yours(folder: Path) -> list[Path]:
     @param folder the folder of an earlier assignment
     @return the paths of your files in it, relative to it
     """
-    files = [p for p in (folder / "compiler").glob("*.py") if p.name not in PROVIDED]
+    compiler = folder / "compiler"
+    files = [
+        p
+        for p in compiler.rglob("*.py")
+        if p.is_file() and "__pycache__" not in p.parts and p.relative_to(compiler).as_posix() not in PROVIDED
+    ]
     files += [p for p in (folder / "test" / "mine").rglob("*") if p.is_file() and "__pycache__" not in p.parts]
     files += (folder / "docs").glob("pa*-design.md")
     return sorted(p.relative_to(folder) for p in files)

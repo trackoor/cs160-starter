@@ -24,9 +24,11 @@ From PA2 on, run `carry.py` in the new folder **before editing it** to bring ove
 $ python3 tools/carry.py ../previous-folder
 ```
 
-Replace `../previous-folder` with your previous assignment's path; put paths containing spaces in quotes. The tool copies your Python modules directly in `compiler/`, your tests in `test/mine/` and your design documents, while keeping the new course-provided files. If it reports conflicting changes, it copies nothing; compare the listed files before choosing which version to keep.
+Replace `../previous-folder` with your previous assignment's path; put paths containing spaces in quotes. The tool copies your Python modules and helper packages under `compiler/`, your tests in `test/mine/` and your design documents, while keeping the new course-provided files. If it reports conflicting changes, it copies nothing; compare the listed files before choosing which version to keep.
 
 After carrying PA2 into PA3, run `python3 tools/check.py pa1 pa2` to check your earlier work. `make check-tests` also includes the new PA3 tests; those are not expected to pass until you implement PA3.
+
+After carrying PA3 into PA4, run `python3 tools/check.py pa1 pa2 pa3` to check your earlier work. PA4 adds no new compiler stub: extend your existing type checker and code generator. The new tests in `make test-pa4` are not expected to pass before those extensions.
 
 Before submitting, run `oneworld assessment status` and check the assignment name. Select all relevant sessions if you submit sessions, and keep the receipt as confirmation of upload. Each handout describes the required code, tests and sessions or self-written design document. AI use is optional; no video or ZIP is required.
 
@@ -77,5 +79,14 @@ $ python3 tools/checktest.py --parser=python test/pa3
 ```
 
 These commands run your checker without calling your code generator. The initial checker accepts every program, so rejection tests will fail until you implement it; the handout gives the tests to run after each exercise. Function code-generation failures in `difftest.py` are expected until Exercise 3 is complete. Send debug prints to standard error after `import sys`: `print(message, file=sys.stderr)`. Run `check` or `checktest.py` directly to see them; `make test-pa3` summarizes results and `difftest.py` captures compiler output.
+
+In PA4, check the new string, list and `None` type rules before compiling heap operations:
+
+```console
+$ python3 tools/checktest.py --parser=python test/pa4
+$ python3 tools/difftest.py --parser=python --verify test/pa4
+```
+
+The first command checks types only; the second also runs the programs and checks their output, errors and LLVM IR. Use `make test-pa4` to include your three tests in `test/mine/pa4`.
 
 For code-generation tests, use `--verify` to check the generated IR, for example `python3 tools/difftest.py --parser=python --verify test/pa1`. If a result differs from grading, try it on Linux; compiler behavior can differ between platforms.
