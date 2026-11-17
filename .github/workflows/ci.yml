@@ -20,8 +20,8 @@ jobs:
               os: ubuntu-24.04,
             }
           - {
-              name: "macOS 14 (Sonoma)",
-              os: macos-14,
+              name: "macOS 15 (Sequoia)",
+              os: macos-15,
             }
     steps:
       - uses: actions/checkout@v4
