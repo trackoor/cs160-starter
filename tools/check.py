@@ -40,6 +40,9 @@ def suites(pa: int) -> list[list[str]]:
     @param pa the assignment's number
     @return the runs, each a tool and its arguments
     """
+    if pa == 5:
+        # PA5 grades only the supplied IR suite; no student-authored tests are required.
+        return [["opttest.py", "-O1", "test/pa5"]]
     tests = []
     for where in (f"test/pa{pa}", f"test/mine/pa{pa}"):
         if pa == 1:
@@ -48,10 +51,6 @@ def suites(pa: int) -> list[list[str]]:
             tests.append(["parsetest.py", where])
         elif pa in (3, 4):  # with Python's parser, as graded, so that a PA2 bug does not count twice
             tests += [["checktest.py", "--parser=python", where], ["difftest.py", "--parser=python", where]]
-        elif pa == 5:
-            if where.startswith("test/pa"):
-                tests.append(["opttest.py", "-O1", where])
-            tests.append(["difftest.py", "-O1", "--verify", where])
         else:
             if where.startswith("test/pa"):
                 tests.append(["opttest.py", "-O2", where])

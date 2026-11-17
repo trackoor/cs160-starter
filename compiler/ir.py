@@ -437,7 +437,7 @@ def parse_instruction(line: str) -> Instr:
             indices.append(v)
         return Instr("getelementptr", result, source_type, [pointer] + indices, index_types=index_types)
     if op == "call":
-        m2 = re.match(rf"(.*?)\s*({NAME})\((.*)\)\s*$", rest)
+        m2 = re.match(rf"(.*?)\s*({NAME})\s*\((.*)\)\s*$", rest)
         ret_type, callee, args_text = m2.group(1).strip(), m2.group(2), m2.group(3)
         arg_types, args = [], []
         for a in split_top(args_text):
@@ -483,7 +483,7 @@ def parse(text: str) -> Module:
         try:
             if function is None:
                 if stripped.startswith("define"):
-                    m = re.match(r"define\s+(.+?)\s+@([-\w$.]+)\((.*)\)\s*\{$", stripped)
+                    m = re.match(r"define\s+(.+?)\s+@([-\w$.]+)\s*\((.*)\)\s*\{$", stripped)
                     params = [typed_value(p) for p in split_top(m.group(3))]
                     function = Function(m.group(2), m.group(1), params)
                     module.functions.append(function)

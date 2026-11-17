@@ -90,3 +90,5 @@ $ python3 tools/difftest.py --parser=python --verify test/pa4
 The first command checks types only; the second also runs the programs and checks their output, errors and LLVM IR. Use `make test-pa4` to include your three tests in `test/mine/pa4`.
 
 For code-generation tests, use `--verify` to check the generated IR, for example `python3 tools/difftest.py --parser=python --verify test/pa1`. If a result differs from grading, try it on Linux; compiler behavior can differ between platforms.
+
+For PA5, `make test-pa5` runs all 28 grading tests on the supplied IR. There are no hidden PA5 tests and no student-authored tests to submit. Passing all 28 on submission replay earns the 80 implementation points; sessions or a design document account for the other 20.
